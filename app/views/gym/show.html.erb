@@ -1,0 +1,50 @@
+<main class="gym">
+  <h1>Setting Board</h1>
+
+  <svg class="floor-plan" viewBox="<%= FloorPlan::VIEW_BOX %>" role="img" aria-label="Gym wall map">
+    <% @wall_sections.each do |section| %>
+      <% wall = FloorPlan.wall_for(section) %>
+      <% routes = section.routes.sort_by(&:id) %>
+      <g class="wall" style="--wall-colour: <%= wall.colour %>">
+        <polyline points="<%= wall.svg_points %>" />
+        <a href="#<%= dom_id(section) %>">
+          <text class="wall-label" x="<%= wall.label_at[0] %>" y="<%= wall.label_at[1] %>"><%= section.name %></text>
+        </a>
+        <% routes.zip(wall.marker_positions(routes.size)).each do |route, (x, y)| %>
+          <g class="route-marker <%= "route-marker--light" if route.light_colour? %>" style="--route-colour: <%= route.css_colour %>">
+            <title><%= "#{route.grade} #{route.colour} – set by #{route.setter} on #{l(route.set_date, format: :long)}" %></title>
+            <circle cx="<%= x %>" cy="<%= y %>" r="14" />
+            <text x="<%= x %>" y="<%= y %>"><%= route.grade %></text>
+          </g>
+        <% end %>
+      </g>
+    <% end %>
+  </svg>
+
+  <div class="sections">
+    <% @wall_sections.each do |section| %>
+      <section class="section" id="<%= dom_id(section) %>" style="--wall-colour: <%= FloorPlan.wall_for(section).colour %>">
+        <h2><%= section.name %> <small><%= pluralize(section.routes.size, "route") %></small></h2>
+        <% if section.routes.any? %>
+          <table>
+            <thead>
+              <tr><th>Grade</th><th>Colour</th><th>Setter</th><th>Set</th></tr>
+            </thead>
+            <tbody>
+              <% section.routes.sort_by(&:id).each do |route| %>
+                <tr>
+                  <td><%= route.grade %></td>
+                  <td><span class="swatch" style="--route-colour: <%= route.css_colour %>"></span><%= route.colour %></td>
+                  <td><%= route.setter %></td>
+                  <td><%= l(route.set_date, format: :short) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="empty">No routes set.</p>
+        <% end %>
+      </section>
+    <% end %>
+  </div>
+</main>

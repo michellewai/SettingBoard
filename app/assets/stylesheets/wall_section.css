@@ -1,0 +1,37 @@
+.floor-plan {
+  display: block;
+  width: 100%;
+}
+
+.wall polyline {
+  fill: none;
+  stroke: var(--wall-colour);
+  stroke-width: 11;
+}
+
+.wall-label {
+  fill: var(--wall-colour);
+  font-size: 30px;
+  text-anchor: middle;
+}
+
+.route-marker circle {
+  fill: var(--route-colour);
+  stroke: #fff;
+  stroke-width: 3;
+  paint-order: stroke;
+  filter: drop-shadow(0 0 1.5px rgb(0 0 0 / 0.7));
+}
+
+.route-marker text {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.route-marker--light text {
+  fill: #1a1a1a;
+}
