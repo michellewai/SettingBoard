@@ -3,11 +3,11 @@ slab_v2:
   grade: V2
   colour: Green
   set_date: 2026-11-10
-  setter: Alex
+  setter: alex
 
 cave_v5:
   wall_section_id: 3 # Cave
   grade: V5
   colour: Red
   set_date: 2026-11-12
-  setter: Sam
+  setter: sam

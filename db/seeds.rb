@@ -25,7 +25,8 @@ if Route.none?
     [ "Front", "V2", "Yellow", "2026-11-14", "Priya" ],
     [ "Front", "V3", "Blue",   "2026-11-14", "Jules" ],
     [ "Front", "V5", "Orange", "2026-11-15", "Marco" ]
-  ].each do |section_name, grade, colour, set_date, setter|
+  ].each do |section_name, grade, colour, set_date, setter_name|
+    setter = Setter.find_or_create_by!(name: setter_name)
     WallSection.find_by!(name: section_name).routes.create!(grade:, colour:, set_date:, setter:)
   end
 end
