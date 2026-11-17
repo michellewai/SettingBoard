@@ -5,14 +5,19 @@ module FloorPlan
   Wall = Data.define(:colour, :points, :label_at) do
     def svg_points = points.map { |x, y| "#{x},#{y}" }.join(" ")
 
+    # Gap kept between a wall's end and its outermost markers, so markers on walls
+    # that meet at a corner don't overlap.
+    MARKER_END_GAP = 16
+
     # Evenly spaced [x, y] positions along the wall, one per marker.
     def marker_positions(count)
       segments = points.each_cons(2).to_a
       lengths = segments.map { |(x1, y1), (x2, y2)| Math.hypot(x2 - x1, y2 - y1) }
       total = lengths.sum
+      usable = total - 2 * MARKER_END_GAP
 
       Array.new(count) do |i|
-        distance = total * (i + 0.5) / count
+        distance = MARKER_END_GAP + (count == 1 ? usable / 2.0 : usable * i / (count - 1))
         index = 0
         while index < segments.size - 1 && distance > lengths[index]
           distance -= lengths[index]

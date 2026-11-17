@@ -13,7 +13,7 @@
         <% routes.zip(wall.marker_positions(routes.size)).each do |route, (x, y)| %>
           <g class="route-marker <%= "route-marker--light" if route.light_colour? %>" style="--route-colour: <%= route.css_colour %>">
             <title><%= "#{route.grade} #{route.colour} – set by #{route.setter.name} on #{l(route.set_date, format: :long)}" %></title>
-            <circle cx="<%= x %>" cy="<%= y %>" r="14" />
+            <circle cx="<%= x %>" cy="<%= y %>" r="10" />
             <text x="<%= x %>" y="<%= y %>"><%= route.grade %></text>
           </g>
         <% end %>

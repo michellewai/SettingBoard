@@ -18,14 +18,14 @@
 .route-marker circle {
   fill: var(--route-colour);
   stroke: #fff;
-  stroke-width: 3;
+  stroke-width: 2;
   paint-order: stroke;
   filter: drop-shadow(0 0 1.5px rgb(0 0 0 / 0.7));
 }
 
 .route-marker text {
   fill: #fff;
-  font-size: 12px;
+  font-size: 9.5px;
   font-weight: 700;
   text-anchor: middle;
   dominant-baseline: central;
