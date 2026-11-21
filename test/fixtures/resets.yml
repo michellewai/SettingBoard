@@ -1,0 +1,16 @@
+# November 2026: Slab moved to a Tuesday, and the week of Monday 23rd skipped.
+back_nov_2:
+  wall_section_id: 1 # Back
+  reset_on: 2026-11-02
+
+slab_nov_10:
+  wall_section_id: 2 # Slab, moved from Monday 9th
+  reset_on: 2026-11-10
+
+cave_nov_16:
+  wall_section_id: 3 # Cave
+  reset_on: 2026-11-16
+
+front_nov_30:
+  wall_section_id: 4 # Front
+  reset_on: 2026-11-30

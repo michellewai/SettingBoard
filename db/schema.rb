@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_17_041213) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_223706) do
+  create_table "resets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "wall_section_id", null: false
+    t.date "reset_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reset_on"], name: "index_resets_on_reset_on"
+    t.index ["wall_section_id", "reset_on"], name: "index_resets_on_wall_section_id_and_reset_on", unique: true
+  end
+
   create_table "routes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "wall_section_id", null: false
     t.string "grade", null: false
@@ -37,6 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_041213) do
     t.index ["name"], name: "index_wall_sections_on_name", unique: true
   end
 
+  add_foreign_key "resets", "wall_sections"
   add_foreign_key "routes", "setters"
   add_foreign_key "routes", "wall_sections"
 end
