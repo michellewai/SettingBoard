@@ -23,6 +23,24 @@
   font-weight: 400;
 }
 
+.reset-note {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 2px 8px;
+  border: 2px solid #f5b800;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.reset-note--now {
+  background: rgb(245 184 0 / 0.25);
+}
+
+.reset-note--next {
+  border-style: dashed;
+}
+
 .section table {
   width: 100%;
   border-collapse: collapse;

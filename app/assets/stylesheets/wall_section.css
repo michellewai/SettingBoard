@@ -9,6 +9,20 @@
   stroke-width: 11;
 }
 
+/* Highlight drawn behind a wall being reset: solid this week, dashed for the next reset. */
+.wall .reset-halo {
+  stroke: #f5b800;
+  stroke-width: 27;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+.wall--reset-next .reset-halo {
+  stroke-dasharray: 14 10;
+  stroke-linecap: butt;
+}
+
 .wall-label {
   fill: var(--wall-colour);
   font-size: 30px;

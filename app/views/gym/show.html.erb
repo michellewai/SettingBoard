@@ -5,7 +5,11 @@
     <% @wall_sections.each do |section| %>
       <% wall = FloorPlan.wall_for(section) %>
       <% routes = section.routes.sort_by(&:id) %>
-      <g class="wall" style="--wall-colour: <%= wall.colour %>">
+      <% status, reset = reset_status(section) %>
+      <g class="wall <%= "wall--reset-#{status}" if status %>" style="--wall-colour: <%= wall.colour %>">
+        <% if status %>
+          <polyline class="reset-halo" points="<%= wall.svg_points %>"><title><%= reset_note(status, reset) %></title></polyline>
+        <% end %>
         <polyline points="<%= wall.svg_points %>" />
         <a href="#<%= dom_id(section) %>">
           <text class="wall-label" x="<%= wall.label_at[0] %>" y="<%= wall.label_at[1] %>"><%= section.name %></text>
@@ -25,6 +29,10 @@
     <% @wall_sections.each do |section| %>
       <section class="section" id="<%= dom_id(section) %>" style="--wall-colour: <%= FloorPlan.wall_for(section).colour %>">
         <h2><%= section.name %> <small><%= pluralize(section.routes.size, "route") %></small></h2>
+        <% status, reset = reset_status(section) %>
+        <% if status %>
+          <p class="reset-note reset-note--<%= status %>"><%= reset_note(status, reset) %></p>
+        <% end %>
         <% if section.routes.any? %>
           <table>
             <thead>

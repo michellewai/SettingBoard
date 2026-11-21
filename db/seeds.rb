@@ -6,19 +6,21 @@ WallSection::NAMES_BY_ID.each do |id, name|
   WallSection.find_or_initialize_by(id: id).update!(name: name)
 end
 
-# Sample routes, only added when there are none so re-seeding never duplicates or overwrites real data.
-#
-# Walls are reset one per week, every Monday, in id order (Back, Slab, Cave, Front, then Back again),
-# and every route on a wall is replaced on its reset day. Back was reset on Monday 26 October 2026.
-FIRST_BACK_RESET = Date.new(2026, 10, 26)
-
-# The Monday a wall was last reset, on or before today.
-last_reset_date = ->(wall_section) do
-  first_reset = FIRST_BACK_RESET + (wall_section.id - 1).weeks
-  cycles = [ (Date.current - first_reset).to_i / 28, 0 ].max
-  first_reset + (cycles * 4).weeks
+# Sample reset schedule: usually one wall a week on a Monday, in id order (Back, Slab, Cave, Front, then
+# Back again). Two weeks break the pattern: Slab's reset moves to the Tuesday for an event, and nothing is
+# reset in Christmas week. Existing resets are left alone, so re-seeding never duplicates or overwrites them.
+{
+  "Back"  => [ "2026-10-26", "2026-11-23", "2026-12-28" ],
+  "Slab"  => [ "2026-11-02", "2026-12-01", "2027-01-04" ], # 1 Dec is a Tuesday, moved from Monday 30 Nov
+  "Cave"  => [ "2026-11-09", "2026-12-07" ],
+  "Front" => [ "2026-11-16", "2026-12-14" ]                # then no reset the week of 21 Dec
+}.each do |section_name, dates|
+  wall_section = WallSection.find_by!(name: section_name)
+  dates.each { |date| wall_section.resets.find_or_create_by!(reset_on: Date.parse(date)) }
 end
 
+# Sample routes, only added when there are none so re-seeding never duplicates or overwrites real data.
+# Every route on a wall is replaced on its reset day, so each set date is that wall's latest reset.
 if Route.none?
   {
     "Back" => [
@@ -43,7 +45,7 @@ if Route.none?
     ]
   }.each do |section_name, routes|
     wall_section = WallSection.find_by!(name: section_name)
-    set_date = last_reset_date.(wall_section)
+    set_date = wall_section.last_reset_on
 
     routes.each do |grade, colour, setter_name|
       setter = Setter.find_or_create_by!(name: setter_name)

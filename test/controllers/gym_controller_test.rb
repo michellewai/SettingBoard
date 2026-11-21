@@ -14,4 +14,32 @@ class GymControllerTest < ActionDispatch::IntegrationTest
     end
     assert_select "#wall_section_1 .empty", text: "No routes set."
   end
+
+  test "highlights this week's reset, even when moved off Monday, and the next one" do
+    travel_to Time.zone.local(2026, 11, 12) do
+      get root_url
+    end
+
+    assert_select ".wall--reset-now", 1 do
+      assert_select ".wall-label", text: "Slab"
+    end
+    assert_select ".wall--reset-next", 1 do
+      assert_select ".wall-label", text: "Cave"
+    end
+    assert_select "#wall_section_2 .reset-note--now", text: "New this week! · Tue 10 Nov"
+    assert_select "#wall_section_3 .reset-note--next", text: "Last chance! Next reset · Mon 16 Nov"
+  end
+
+  test "highlights nothing this week when the reset is skipped, and the next one after it" do
+    travel_to Time.zone.local(2026, 11, 25) do
+      get root_url
+    end
+
+    assert_select ".wall--reset-now", 0
+    assert_select ".reset-note--now", 0
+    assert_select ".wall--reset-next", 1 do
+      assert_select ".wall-label", text: "Front"
+    end
+    assert_select "#wall_section_4 .reset-note--next", text: "Last chance! Next reset · Mon 30 Nov"
+  end
 end
