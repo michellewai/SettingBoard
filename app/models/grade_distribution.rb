@@ -1,6 +1,6 @@
-# How many routes there are of each grade, for the whole gym and for each wall section.
+# How many routes are up at each grade, for the whole gym and for each wall section.
 class GradeDistribution
-  def initialize(routes = Route.all)
+  def initialize(routes = Route.current)
     @counts = routes.group(:wall_section_id, :grade).count
   end
 

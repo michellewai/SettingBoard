@@ -6,13 +6,23 @@ class GymControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "svg.floor-plan .wall", 4
-    assert_select "svg.floor-plan .route-marker", Route.count
+    assert_select "svg.floor-plan .route-marker", Route.current.count
     assert_select "section.section", 4
     assert_select "#wall_section_3 tbody tr", 1 do
       assert_select "td", text: "V5"
       assert_select "td", text: "Sam"
     end
     assert_select "#wall_section_1 .empty", text: "No routes set."
+  end
+
+  test "leaves retired routes off the map and the wall cards" do
+    get root_url
+
+    assert_select "svg.floor-plan .route-marker text", text: "V7", count: 0
+    assert_select "#wall_section_2 h2 small", text: "1 route"
+    assert_select "#wall_section_2 tbody tr", 1 do
+      assert_select "td", text: "V2"
+    end
   end
 
   test "loads the wall map in the same number of queries however many routes there are" do
@@ -27,7 +37,7 @@ class GymControllerTest < ActionDispatch::IntegrationTest
 
       assert_queries_count(queries) { get root_url }
     end
-    assert_select "svg.floor-plan .route-marker", Route.count
+    assert_select "svg.floor-plan .route-marker", Route.current.count
   end
 
   test "shows both tabs with Wall map as the current page" do
