@@ -24,24 +24,24 @@ end
 if Route.none?
   {
     "Back" => [
-      [ "V0", "Yellow", "Priya" ], [ "V0", "Green",  "Priya" ], [ "V1", "Pink",   "Marco" ], [ "V2", "Blue",   "Marco" ],
-      [ "V3", "Orange", "Priya" ], [ "V3", "Purple", "Jules" ], [ "V4", "Red",    "Marco" ], [ "V5", "White",  "Jules" ],
-      [ "V6", "Black",  "Jules" ], [ "V7", "Blue",   "Marco" ]
+      [ 0, "Yellow", "Priya" ], [ 0, "Green",  "Priya" ], [ 1, "Pink",   "Marco" ], [ 2, "Blue",   "Marco" ],
+      [ 3, "Orange", "Priya" ], [ 3, "Purple", "Jules" ], [ 4, "Red",    "Marco" ], [ 5, "White",  "Jules" ],
+      [ 6, "Black",  "Jules" ], [ 7, "Blue",   "Marco" ]
     ],
     "Slab" => [
-      [ "V0", "Green",  "Jules" ], [ "V1", "Yellow", "Tomas" ], [ "V1", "Pink",   "Jules" ], [ "V2", "Orange", "Tomas" ],
-      [ "V2", "White",  "Priya" ], [ "V3", "Blue",   "Jules" ], [ "V3", "Red",    "Priya" ], [ "V4", "Purple", "Tomas" ],
-      [ "V5", "Black",  "Jules" ], [ "V6", "Green",  "Priya" ]
+      [ 0, "Green",  "Jules" ], [ 1, "Yellow", "Tomas" ], [ 1, "Pink",   "Jules" ], [ 2, "Orange", "Tomas" ],
+      [ 2, "White",  "Priya" ], [ 3, "Blue",   "Jules" ], [ 3, "Red",    "Priya" ], [ 4, "Purple", "Tomas" ],
+      [ 5, "Black",  "Jules" ], [ 6, "Green",  "Priya" ]
     ],
     "Cave" => [
-      [ "V2", "Yellow", "Tomas" ], [ "V3", "Green",  "Marco" ], [ "V4", "Orange", "Tomas" ], [ "V4", "Blue",   "Marco" ],
-      [ "V5", "Red",    "Tomas" ], [ "V5", "Pink",   "Marco" ], [ "V6", "Purple", "Tomas" ], [ "V7", "White",  "Marco" ],
-      [ "V8", "Black",  "Tomas" ], [ "V9", "Red",    "Marco" ]
+      [ 2, "Yellow", "Tomas" ], [ 3, "Green",  "Marco" ], [ 4, "Orange", "Tomas" ], [ 4, "Blue",   "Marco" ],
+      [ 5, "Red",    "Tomas" ], [ 5, "Pink",   "Marco" ], [ 6, "Purple", "Tomas" ], [ 7, "White",  "Marco" ],
+      [ 8, "Black",  "Tomas" ], [ 9, "Red",    "Marco" ]
     ],
     "Front" => [
-      [ "V0", "Green",  "Priya" ], [ "V0", "Yellow", "Tomas" ], [ "V1", "Pink",   "Priya" ], [ "V1", "Orange", "Jules" ],
-      [ "V2", "Blue",   "Tomas" ], [ "V2", "White",  "Priya" ], [ "V3", "Purple", "Jules" ], [ "V3", "Red",    "Tomas" ],
-      [ "V4", "Black",  "Priya" ], [ "V5", "Blue",   "Jules" ]
+      [ 0, "Green",  "Priya" ], [ 0, "Yellow", "Tomas" ], [ 1, "Pink",   "Priya" ], [ 1, "Orange", "Jules" ],
+      [ 2, "Blue",   "Tomas" ], [ 2, "White",  "Priya" ], [ 3, "Purple", "Jules" ], [ 3, "Red",    "Tomas" ],
+      [ 4, "Black",  "Priya" ], [ 5, "Blue",   "Jules" ]
     ]
   }.each do |section_name, routes|
     wall_section = WallSection.find_by!(name: section_name)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_223706) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_010000) do
   create_table "resets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "wall_section_id", null: false
     t.date "reset_on", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_223706) do
 
   create_table "routes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "wall_section_id", null: false
-    t.string "grade", null: false
+    t.integer "grade", null: false
     t.string "colour", null: false
     t.date "set_date", null: false
     t.datetime "created_at", null: false
