@@ -1,6 +1,6 @@
 class WallSection < ApplicationRecord
-  # TODO: refactor so that it doesn't have to be hard-coded here
-  # Fixed ids for the gym's four sections.
+  # Fixed ids for the gym's four sections. The ids are fixed rather than generated because
+  # FloorPlan's wall geometry is keyed by them, and the seeds use them to set up the walls.
   NAMES_BY_ID = { 1 => "Back", 2 => "Slab", 3 => "Cave", 4 => "Front" }.freeze
 
   has_many :routes, dependent: :destroy
