@@ -22,11 +22,13 @@ Each week a climbing gym strips one wall and sets new routes on it. Head setters
 ## Other design decisions
 
 - **No front-end build step.** The map is plain SVG rendered on the server. Markers are spaced evenly along each wall's path, with a gap at the ends so markers on walls that meet at a corner don't overlap (`FloorPlan::Wall#marker_positions`).
-- **Repeatable seeds.** `db:seed` is idempotent: it never duplicates or overwrites routes or resets, and CI runs it on every push.
+- **Routes are retired, never deleted.** When a wall is reset, `WallSection#reset!` stamps its routes with `retired_on` and records the date the reset really happened, in one transaction. History is stored rather than calculated from the schedule, so moving a planned reset never rewrites the past, and `Route.on(date)` gives the routes up on any day.
+- **Rules enforced by the database too.** Foreign keys, NOT NULL columns, unique indexes and check constraints (grades V0–V10, no route retired before it was set) back up the model validations, and tests insert bad rows directly to prove the database rejects them.
+- **Repeatable seeds.** `db:seed` is idempotent: it never duplicates or overwrites routes or resets, and CI runs it on every push. The seeds include a past rotation of retired routes, so there's history to query.
 
 ## Quality checks
 
-CI runs on every push and pull request. It runs RuboCop, Brakeman, bundler-audit, an importmap audit, the model and controller tests, and the seeds. Dependabot keeps gems and GitHub Actions up to date.
+CI runs on every push and pull request. It runs RuboCop, Brakeman, bundler-audit, an importmap audit, the model, controller and system tests, and the seeds. Dependabot keeps gems and GitHub Actions up to date.
 
 ## Run it
 
@@ -44,7 +46,8 @@ Then open http://localhost:3000.
 It's read-only for now, with no sign-in or forms. In priority order:
 
 1. **Compare the grade distribution with a target mix**, so the Grades tab shows which grades are over- or under-set.
-2. **Forms and authentication**, so setters can add and retire routes and plan, move and skip resets. Today resets are entered through seeds or the console.
-3. **Route positions on each wall**, to flag a repeated grade on the same stretch of wall.
-4. **Climber sends**, to compare how often each setter's routes get climbed.
-5. **Deploy** with the included Kamal setup.
+2. **Forms and authentication**, so setters can add routes, record resets, and plan, move and skip them. Today resets are recorded in the console with `WallSection#reset!`.
+3. **Grade mix over time** on the Grades tab, using the stored route history.
+4. **Route positions on each wall**, to flag a repeated grade on the same stretch of wall.
+5. **Climber sends**, to compare how often each setter's routes get climbed.
+6. **Deploy** with the included Kamal setup.
