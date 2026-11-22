@@ -1,6 +1,6 @@
 # Setting Board
 
-A Rails app for a climbing gym's route setting team. It shows the gym's wall map, every route on each wall, and which wall is reset this week and next.
+A Rails app for a climbing gym's route setting team. It shows the gym's wall map, every route on each wall, which wall is reset this week and next, and how many routes there are at each grade.
 
 **Stack:** Rails 8, MySQL, server-rendered SVG, Minitest, and GitHub Actions CI running linting and security scans.
 
@@ -15,6 +15,7 @@ Each week a climbing gym strips one wall and sets new routes on it. Head setters
 - **Wall map:** the four wall sections drawn as an SVG floor plan. Each route is a marker in its hold colour, labelled with its grade.
 - **Route lists:** one card per wall, listing grade, colour, setter and set date.
 - **Reset schedule:** the wall reset this week is highlighted solid and the next upcoming reset is dashed. The date appears on the wall's card, so a reset moved to a Tuesday shows as Tuesday.
+- **Grade distribution:** a Grades tab with a bar chart of how many routes there are at each grade across the gym, next to a grade × wall table with totals. Grades with no routes show as a muted dash, so gaps in the mix stand out.
 
 ## Other design decisions
 
@@ -40,7 +41,7 @@ Then open http://localhost:3000.
 
 It's read-only for now, with no sign-in or forms. In priority order:
 
-1. **Grade distribution** for the whole gym and per wall, compared with the target mix. The data already exists, but nothing measures it yet.
+1. **Compare the grade distribution with a target mix**, so the Grades tab shows which grades are over- or under-set.
 2. **Forms and authentication**, so setters can add and retire routes and plan, move and skip resets. Today resets are entered through seeds or the console.
 3. **Route positions on each wall**, to flag a repeated grade on the same stretch of wall.
 4. **Climber sends**, to compare how often each setter's routes get climbed.
