@@ -15,6 +15,21 @@ class GymControllerTest < ActionDispatch::IntegrationTest
     assert_select "#wall_section_1 .empty", text: "No routes set."
   end
 
+  test "loads the wall map in the same number of queries however many routes there are" do
+    ActiveRecord::Base.uncached do
+      get root_url # warm up, so one-off queries on the first request aren't counted
+      queries = count_queries { get root_url }
+
+      # A route on every wall, including empty Back, by Jo, a setter with no routes yet.
+      WallSection.find_each do |section|
+        section.routes.create!(grade: 3, colour: "Blue", set_date: Date.current, setter: setters(:jo))
+      end
+
+      assert_queries_count(queries) { get root_url }
+    end
+    assert_select "svg.floor-plan .route-marker", Route.count
+  end
+
   test "shows both tabs with Wall map as the current page" do
     get root_url
 

@@ -31,4 +31,20 @@ class GradeDistributionTest < ActiveSupport::TestCase
   test "max_count is 0 with no routes" do
     assert_equal 0, GradeDistribution.new(Route.none).max_count
   end
+
+  test "loads every count in one query, then answers from memory" do
+    wall_sections = WallSection.all.to_a
+    distribution = ActiveRecord::Base.uncached { assert_queries_count(1) { GradeDistribution.new } }
+
+    # The Grades page asks for every grade on every wall, so none of these may hit the database.
+    assert_no_queries do
+      Route::GRADES.each do |grade|
+        distribution.count(grade)
+        wall_sections.each { |section| distribution.count(grade, section) }
+      end
+      wall_sections.each { |section| distribution.total(section) }
+      distribution.total
+      distribution.max_count
+    end
+  end
 end

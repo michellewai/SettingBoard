@@ -10,6 +10,14 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # How many SQL queries the block runs, counted the same way as assert_queries_count.
+    # Tests run with the query cache on, so wrap both in ActiveRecord::Base.uncached to
+    # count queries a real request would run, not ones answered from an earlier query.
+    def count_queries(&block)
+      ActiveRecord::Base.lease_connection.materialize_transactions
+      counter = ActiveRecord::Assertions::QueryAssertions::SQLCounter.new
+      ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
+      counter.log.size
+    end
   end
 end
