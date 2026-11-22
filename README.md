@@ -4,7 +4,9 @@ A Rails app for a climbing gym's route setting team. It shows the gym's wall map
 
 **Stack:** Rails 8, MySQL, server-rendered SVG, Minitest, and GitHub Actions CI running linting and security scans.
 
-![Setting Board showing the gym wall map with routes and reset highlights](docs/screenshot.png)
+![Setting Board showing the gym wall map with routes and reset highlights](docs/wall_map.png)
+
+![Grades tab showing the grade distribution across the whole gym](docs/grades.png)
 
 ## The problem
 
