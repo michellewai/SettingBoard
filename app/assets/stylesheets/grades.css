@@ -40,6 +40,8 @@
 }
 
 .grade-chart thead th {
+  /* Matches the wall colour bar on the per-wall table's headers, so the rows of both tables line up. */
+  border-top: 5px solid transparent;
   border-bottom: 1px solid #ddd;
   font-size: 0.875rem;
   color: #666;
