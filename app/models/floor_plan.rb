@@ -2,12 +2,12 @@
 module FloorPlan
   VIEW_BOX = "0 0 1070 455"
 
+  # Gap kept between a wall's end and its outermost markers, so markers on walls
+  # that meet at a corner don't overlap.
+  MARKER_END_GAP = 16
+
   Wall = Data.define(:colour, :points, :label_at) do
     def svg_points = points.map { |x, y| "#{x},#{y}" }.join(" ")
-
-    # Gap kept between a wall's end and its outermost markers, so markers on walls
-    # that meet at a corner don't overlap.
-    MARKER_END_GAP = 16
 
     # Evenly spaced [x, y] positions along the wall, one per marker.
     def marker_positions(count)
