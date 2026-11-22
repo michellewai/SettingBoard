@@ -31,6 +31,13 @@ class DatabaseConstraintsTest < ActiveSupport::TestCase
     assert_difference("Route.count", 2) { Route.insert_all!([ @route.merge(grade: 0), @route.merge(grade: 10) ]) }
   end
 
+  test "routes can't be retired before they were set" do
+    assert_raises(ActiveRecord::CheckViolation) do
+      Route.insert!(@route.merge(set_date: Date.new(2026, 11, 10), retired_on: Date.new(2026, 11, 9)))
+    end
+    assert_difference("Route.count") { Route.insert!(@route.merge(set_date: Date.new(2026, 11, 10), retired_on: Date.new(2026, 11, 10))) }
+  end
+
   test "setter and wall section names are unique" do
     assert_raises(ActiveRecord::RecordNotUnique) { Setter.insert!({ name: "Sam" }) }
     assert_raises(ActiveRecord::RecordNotUnique) { WallSection.insert!({ name: "Slab" }) }

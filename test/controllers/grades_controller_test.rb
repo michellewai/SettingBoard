@@ -16,6 +16,9 @@ class GradesControllerTest < ActionDispatch::IntegrationTest
       assert_select ".grade-chart__count", text: "1"
     end
     assert_select ".grade-chart tbody tr:nth-child(1) .grade-chart__count", text: "0"
+    # The only V7 route is retired, so it isn't counted.
+    assert_select ".grade-chart tbody tr:nth-child(8) .grade-chart__count", text: "0"
+    assert_select "h2 small", text: "2 routes in the gym"
   end
 
   test "draws empty bars when there are no routes" do

@@ -2,7 +2,7 @@
   <svg class="floor-plan" viewBox="<%= FloorPlan::VIEW_BOX %>" role="img" aria-label="Gym wall map">
     <% @wall_sections.each do |section| %>
       <% wall = FloorPlan.wall_for(section) %>
-      <% routes = section.routes.sort_by(&:id) %>
+      <% routes = section.current_routes.sort_by(&:id) %>
       <% status, reset = reset_status(section) %>
       <g class="wall <%= "wall--reset-#{status}" if status %>" style="--wall-colour: <%= wall.colour %>">
         <% if status %>
@@ -26,18 +26,18 @@
   <div class="sections">
     <% @wall_sections.each do |section| %>
       <section class="section" id="<%= dom_id(section) %>" style="--wall-colour: <%= FloorPlan.wall_for(section).colour %>">
-        <h2><%= section.name %> <small><%= pluralize(section.routes.size, "route") %></small></h2>
+        <h2><%= section.name %> <small><%= pluralize(section.current_routes.size, "route") %></small></h2>
         <% status, reset = reset_status(section) %>
         <% if status %>
           <p class="reset-note reset-note--<%= status %>"><%= reset_note(status, reset) %></p>
         <% end %>
-        <% if section.routes.any? %>
+        <% if section.current_routes.any? %>
           <table>
             <thead>
               <tr><th>Grade</th><th>Colour</th><th>Setter</th><th>Set</th></tr>
             </thead>
             <tbody>
-              <% section.routes.sort_by(&:id).each do |route| %>
+              <% section.current_routes.sort_by(&:id).each do |route| %>
                 <tr>
                   <td><%= route.grade_label %></td>
                   <td><span class="swatch" style="--route-colour: <%= route.css_colour %>"></span><%= route.colour %></td>

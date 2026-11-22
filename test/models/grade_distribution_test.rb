@@ -9,6 +9,19 @@ class GradeDistributionTest < ActiveSupport::TestCase
     assert_equal 0, @distribution.count(0)
   end
 
+  test "counts only current routes by default, leaving out retired ones" do
+    assert_equal 0, @distribution.count(7)
+    assert_equal 2, @distribution.total
+  end
+
+  test "counts the grade mix on a past day" do
+    distribution = GradeDistribution.new(Route.on(Date.new(2026, 11, 1)))
+
+    assert_equal 1, distribution.count(7, wall_sections(:slab))
+    assert_equal 0, distribution.count(2)
+    assert_equal 1, distribution.total
+  end
+
   test "counts routes of each grade on one wall" do
     assert_equal 1, @distribution.count(2, wall_sections(:slab))
     assert_equal 0, @distribution.count(5, wall_sections(:slab))

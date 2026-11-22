@@ -8,7 +8,7 @@ class SetterTest < ActiveSupport::TestCase
   end
 
   test "has many routes" do
-    assert_equal [ routes(:slab_v2) ], setters(:alex).routes.to_a
+    assert_equal [ routes(:slab_v2), routes(:slab_v7_retired) ].sort_by(&:id), setters(:alex).routes.sort_by(&:id)
   end
 
   test "cannot be deleted while it has routes" do
