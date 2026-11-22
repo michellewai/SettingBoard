@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_22_025527) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_035731) do
   create_table "resets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "wall_section_id", null: false
     t.date "reset_on", null: false
@@ -28,8 +28,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_025527) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "setter_id", null: false
+    t.date "retired_on"
     t.index ["setter_id"], name: "index_routes_on_setter_id"
     t.index ["wall_section_id"], name: "index_routes_on_wall_section_id"
+    t.check_constraint "(`retired_on` is null) or (`retired_on` >= `set_date`)", name: "routes_retired_after_set"
     t.check_constraint "`grade` between 0 and 10", name: "routes_grade_range"
   end
 

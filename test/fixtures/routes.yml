@@ -11,3 +11,12 @@ cave_v5:
   colour: Red
   set_date: 2026-11-12
   setter: sam
+
+# Up before Slab's reset on 10 Nov, then retired. Pages showing current routes must leave it out.
+slab_v7_retired:
+  wall_section_id: 2 # Slab
+  grade: 7
+  colour: Purple
+  set_date: 2026-10-13
+  retired_on: 2026-11-10
+  setter: alex
