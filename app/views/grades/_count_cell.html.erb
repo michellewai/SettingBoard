@@ -1,0 +1,4 @@
+<%# A route count; zero is muted as a dash so gaps in the grade mix stand out. %>
+<%= tag.td class: [ local_assigns[:css_class], { "grade-walls__zero": count.zero? } ] do %>
+  <% if count.zero? %><span aria-label="0">–</span><% else %><%= count %><% end %>
+<% end %>

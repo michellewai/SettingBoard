@@ -4,6 +4,29 @@
   font-size: 0.875rem;
 }
 
+/* Chart and per-wall table side by side, stacking when there isn't room. */
+.grade-panels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 48px;
+}
+
+.grade-panel:first-child {
+  flex: 1 1 320px;
+  max-width: 640px;
+}
+
+.grade-panel h2 {
+  white-space: nowrap;
+}
+
+/* Same row height in both tables, so each grade lines up across them. */
+.grade-chart tbody tr,
+.grade-walls tbody tr {
+  height: 28px;
+}
+
 .grade-chart {
   width: 100%;
   max-width: 640px;
@@ -52,4 +75,46 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+.grade-walls {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.grade-walls th,
+.grade-walls td {
+  padding: 4px 12px;
+  text-align: right;
+}
+
+.grade-walls th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+}
+
+.grade-walls thead th {
+  border-bottom: 1px solid #ddd;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.grade-walls thead th[style] {
+  border-top: 5px solid var(--wall-colour);
+  color: inherit;
+}
+
+.grade-walls tfoot th,
+.grade-walls tfoot td {
+  border-top: 1px solid #ddd;
+  font-weight: 600;
+}
+
+.grade-walls__gym {
+  border-left: 1px solid #ddd;
+  font-weight: 600;
+}
+
+.grade-walls__zero {
+  color: #bbb;
 }

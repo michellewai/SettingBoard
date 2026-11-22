@@ -1,22 +1,62 @@
 <% content_for(:title) { "Grades · Setting Board" } %>
 
 <main class="gym grades">
-  <h2>Routes per grade <small><%= pluralize(@distribution.total, "route") %> in the gym</small></h2>
+  <div class="grade-panels">
+    <section class="grade-panel">
+      <h2>Routes per grade <small><%= pluralize(@distribution.total, "route") %> in the gym</small></h2>
 
-  <% max = @distribution.max_count %>
-  <table class="grade-chart">
-    <thead>
-      <tr><th scope="col">Grade</th><th scope="col"><span class="visually-hidden">Share</span></th><th scope="col">Routes</th></tr>
-    </thead>
-    <tbody>
-      <% Route::GRADES.each do |grade| %>
-        <% count = @distribution.count(grade) %>
-        <tr>
-          <th scope="row"><%= Route.grade_label(grade) %></th>
-          <td class="grade-chart__bar"><span style="--share: <%= max.zero? ? 0 : count * 100.0 / max %>%"></span></td>
-          <td class="grade-chart__count"><%= count %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+      <% max = @distribution.max_count %>
+      <table class="grade-chart">
+        <thead>
+          <tr><th scope="col">Grade</th><th scope="col"><span class="visually-hidden">Share</span></th><th scope="col">Routes</th></tr>
+        </thead>
+        <tbody>
+          <% Route::GRADES.each do |grade| %>
+            <% count = @distribution.count(grade) %>
+            <tr>
+              <th scope="row"><%= Route.grade_label(grade) %></th>
+              <td class="grade-chart__bar"><span style="--share: <%= max.zero? ? 0 : count * 100.0 / max %>%"></span></td>
+              <td class="grade-chart__count"><%= count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grade-panel">
+      <h2>Routes per grade on each wall</h2>
+
+      <table class="grade-walls">
+        <thead>
+          <tr>
+            <th scope="col">Grade</th>
+            <% @wall_sections.each do |section| %>
+              <th scope="col" style="--wall-colour: <%= FloorPlan.wall_for(section).colour %>"><%= section.name %></th>
+            <% end %>
+            <th scope="col" class="grade-walls__gym">Gym</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Route::GRADES.each do |grade| %>
+            <tr>
+              <th scope="row"><%= Route.grade_label(grade) %></th>
+              <% @wall_sections.each do |section| %>
+                <%= render "count_cell", count: @distribution.count(grade, section) %>
+              <% end %>
+              <%= render "count_cell", count: @distribution.count(grade), css_class: "grade-walls__gym" %>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">Total</th>
+            <% @wall_sections.each do |section| %>
+              <%= render "count_cell", count: @distribution.total(section) %>
+            <% end %>
+            <%= render "count_cell", count: @distribution.total, css_class: "grade-walls__gym" %>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </div>
 </main>
