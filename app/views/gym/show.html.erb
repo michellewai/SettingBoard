@@ -1,6 +1,4 @@
 <main class="gym">
-  <h1>Setting Board</h1>
-
   <svg class="floor-plan" viewBox="<%= FloorPlan::VIEW_BOX %>" role="img" aria-label="Gym wall map">
     <% @wall_sections.each do |section| %>
       <% wall = FloorPlan.wall_for(section) %>

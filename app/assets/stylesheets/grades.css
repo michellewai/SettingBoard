@@ -1,0 +1,55 @@
+.grades h2 small {
+  font-weight: normal;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.grade-chart {
+  width: 100%;
+  max-width: 640px;
+  border-collapse: collapse;
+}
+
+.grade-chart th,
+.grade-chart td {
+  padding: 4px 8px;
+  text-align: left;
+}
+
+.grade-chart thead th {
+  border-bottom: 1px solid #ddd;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.grade-chart tbody th {
+  width: 3em;
+  font-weight: 600;
+}
+
+.grade-chart__bar {
+  width: 100%;
+}
+
+.grade-chart__bar span {
+  display: block;
+  width: var(--share);
+  height: 18px;
+  border-radius: 0 3px 3px 0;
+  background: #3b6ea5;
+}
+
+.grade-chart__count {
+  width: 3em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -22,7 +22,40 @@ body {
   padding: 16px;
 }
 
-.gym h1 {
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 24px;
+  max-width: 1070px;
+  margin: 0 auto;
+  padding: 16px 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.site-header h1 {
   margin: 8px 0 0;
   font-size: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  padding: 8px 12px;
+  border-bottom: 3px solid transparent;
+  color: #444;
+  text-decoration: none;
+}
+
+.tab:hover {
+  color: #1a1a1a;
+}
+
+.tab[aria-current="page"] {
+  border-bottom-color: #1a1a1a;
+  color: #1a1a1a;
+  font-weight: 600;
 }

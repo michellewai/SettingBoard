@@ -1,0 +1,22 @@
+<% content_for(:title) { "Grades · Setting Board" } %>
+
+<main class="gym grades">
+  <h2>Routes per grade <small><%= pluralize(@distribution.total, "route") %> in the gym</small></h2>
+
+  <% max = @distribution.max_count %>
+  <table class="grade-chart">
+    <thead>
+      <tr><th scope="col">Grade</th><th scope="col"><span class="visually-hidden">Share</span></th><th scope="col">Routes</th></tr>
+    </thead>
+    <tbody>
+      <% Route::GRADES.each do |grade| %>
+        <% count = @distribution.count(grade) %>
+        <tr>
+          <th scope="row"><%= Route.grade_label(grade) %></th>
+          <td class="grade-chart__bar"><span style="--share: <%= max.zero? ? 0 : count * 100.0 / max %>%"></span></td>
+          <td class="grade-chart__count"><%= count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</main>

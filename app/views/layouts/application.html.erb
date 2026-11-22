@@ -20,6 +20,14 @@
   </head>
 
   <body>
+    <header class="site-header">
+      <h1>Setting Board</h1>
+      <nav class="tabs" aria-label="Pages">
+        <%= link_to "Wall map", root_path, class: "tab", aria: { current: ("page" if current_page?(root_path)) } %>
+        <%= link_to "Grades", grades_path, class: "tab", aria: { current: ("page" if current_page?(grades_path)) } %>
+      </nav>
+    </header>
+
     <%= yield %>
   </body>
 </html>

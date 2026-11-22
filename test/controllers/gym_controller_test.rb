@@ -15,6 +15,14 @@ class GymControllerTest < ActionDispatch::IntegrationTest
     assert_select "#wall_section_1 .empty", text: "No routes set."
   end
 
+  test "shows both tabs with Wall map as the current page" do
+    get root_url
+
+    assert_select ".tabs a", 2
+    assert_select ".tabs a[href='#{grades_path}']", text: "Grades"
+    assert_select ".tabs a[aria-current=page]", count: 1, text: "Wall map"
+  end
+
   test "highlights this week's reset, even when moved off Monday, and the next one" do
     travel_to Time.zone.local(2026, 11, 12) do
       get root_url
