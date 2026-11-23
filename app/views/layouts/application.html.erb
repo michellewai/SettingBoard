@@ -23,7 +23,19 @@
         <%= link_to "Wall map", root_path, class: "tab", aria: { current: ("page" if current_page?(root_path)) } %>
         <%= link_to "Grades", grades_path, class: "tab", aria: { current: ("page" if current_page?(grades_path)) } %>
       </nav>
+      <div class="account">
+        <% if authenticated? %>
+          <span>Signed in as <strong><%= Current.user.name %></strong></span>
+          <%= button_to "Sign out", session_path, method: :delete, class: "link-button" %>
+        <% elsif !current_page?(new_session_path) %>
+          <%= link_to "Sign in", new_session_path %>
+        <% end %>
+      </div>
     </header>
+
+    <% flash.each do |type, message| %>
+      <p class="flash flash--<%= type %>" role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></p>
+    <% end %>
 
     <%= yield %>
   </body>

@@ -1,0 +1,18 @@
+<% content_for(:title) { "Sign in · Setting Board" } %>
+
+<main class="gym form-page">
+  <h2>Sign in</h2>
+  <p class="form-page__hint">For setters. The board is public to read; adding routes and recording resets need an account from your head setter.</p>
+
+  <%= form_with url: session_path, class: "form" do |form| %>
+    <div class="field">
+      <%= form.label :email_address, "Email address" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address] %>
+    </div>
+    <div class="field">
+      <%= form.label :password %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72 %>
+    </div>
+    <%= form.submit "Sign in", class: "button" %>
+  <% end %>
+</main>

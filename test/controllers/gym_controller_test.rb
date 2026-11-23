@@ -40,6 +40,24 @@ class GymControllerTest < ActionDispatch::IntegrationTest
     assert_select "svg.floor-plan .route-marker", Route.current.count
   end
 
+  test "is public, with a sign-in link when signed out" do
+    get root_url
+
+    assert_response :success
+    assert_select ".account a[href='#{new_session_path}']", text: "Sign in"
+    assert_select ".account button", count: 0
+  end
+
+  test "shows who is signed in, with a sign-out button" do
+    sign_in_as(users(:sam))
+
+    get root_url
+
+    assert_select ".account strong", text: "Sam"
+    assert_select ".account form[action='#{session_path}'] button", text: "Sign out"
+    assert_select ".account a[href='#{new_session_path}']", count: 0
+  end
+
   test "shows both tabs with Wall map as the current page" do
     get root_url
 

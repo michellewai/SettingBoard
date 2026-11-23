@@ -1,0 +1,41 @@
+.form-page__hint {
+  max-width: 560px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.form {
+  display: grid;
+  max-width: 420px;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.field input,
+.field select {
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.button {
+  justify-self: start;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: #3b6ea5;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
