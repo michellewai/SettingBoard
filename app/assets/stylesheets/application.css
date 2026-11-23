@@ -59,3 +59,42 @@ body {
   color: #1a1a1a;
   font-weight: 600;
 }
+
+.account {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-left: auto;
+  font-size: 0.875rem;
+}
+
+.account form {
+  display: inline;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.flash {
+  max-width: 1038px;
+  margin: 12px auto 0;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.flash--notice {
+  background: #e8f3ea;
+  color: #1d5c2c;
+}
+
+.flash--alert {
+  background: #fbeaea;
+  color: #8a1f1f;
+}

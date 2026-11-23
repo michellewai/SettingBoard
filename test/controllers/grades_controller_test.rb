@@ -56,4 +56,11 @@ class GradesControllerTest < ActionDispatch::IntegrationTest
 
     assert_select ".tabs a[aria-current=page]", count: 1, text: "Grades"
   end
+
+  test "is public to read" do
+    get grades_url
+
+    assert_response :success
+    assert_select ".account a", text: "Sign in"
+  end
 end
