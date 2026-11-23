@@ -1,3 +1,5 @@
+# Sign-in for setters, from Rails' authentication generator. Changed from the generated version to expire
+# sessions, reset the browser session at sign-in and sign-out, and return only to pages that can be visited.
 module Authentication
   extend ActiveSupport::Concern
 
@@ -26,11 +28,12 @@ module Authentication
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      Session.active.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
     end
 
     def request_authentication
-      session[:return_to_after_authenticating] = request.url
+      # The redirect after sign-in is a GET, so a form's URL might not exist to return to.
+      session[:return_to_after_authenticating] = request.url if request.get? || request.head?
       redirect_to new_session_path
     end
 
@@ -39,14 +42,25 @@ module Authentication
     end
 
     def start_new_session_for(user)
-      user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
-        Current.session = session
-        cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
-      end
+      reset_browser_session_keeping_return_url
+
+      Current.session = user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip)
+      cookies.signed[:session_id] = {
+        value: Current.session.id, expires: Session::LIFETIME, httponly: true, same_site: :lax
+      }
     end
 
     def terminate_session
       Current.session.destroy
+      Current.session = nil
       cookies.delete(:session_id)
+      reset_session
+    end
+
+    # A fresh session and CSRF token, so nothing set before sign-in carries over to the signed-in setter.
+    def reset_browser_session_keeping_return_url
+      return_url = session[:return_to_after_authenticating]
+      reset_session
+      session[:return_to_after_authenticating] = return_url if return_url
     end
 end
