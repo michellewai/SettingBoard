@@ -43,6 +43,20 @@ class DatabaseConstraintsTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotUnique) { WallSection.insert!({ name: "Slab" }) }
   end
 
+  test "users need a setter that exists, and have one account per setter and email address" do
+    user = { setter_id: setters(:jo).id, email_address: "jo@example.com", password_digest: "x" }
+
+    assert_raises(ActiveRecord::InvalidForeignKey) { User.insert!(user.merge(setter_id: 0)) }
+    assert_raises(ActiveRecord::RecordNotUnique) { User.insert!(user.merge(setter_id: setters(:alex).id)) }
+    assert_raises(ActiveRecord::RecordNotUnique) { User.insert!(user.merge(email_address: "alex@example.com")) }
+    assert_raises(ActiveRecord::NotNullViolation) { User.insert!(user.merge(password_digest: nil)) }
+    assert_difference("User.count") { User.insert!(user) }
+  end
+
+  test "sessions belong to a user that exists" do
+    assert_raises(ActiveRecord::InvalidForeignKey) { Session.insert!({ user_id: 0 }) }
+  end
+
   test "a wall can only be reset once a day" do
     reset = resets(:slab_nov_10)
 

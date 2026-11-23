@@ -1,0 +1,12 @@
+# Every fixture user's password is "password".
+<% password_digest = BCrypt::Password.create("password") %>
+
+alex:
+  setter: alex
+  email_address: alex@example.com
+  password_digest: <%= password_digest %>
+
+sam:
+  setter: sam
+  email_address: sam@example.com
+  password_digest: <%= password_digest %>
