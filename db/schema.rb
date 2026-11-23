@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_22_035731) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_041929) do
   create_table "resets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "wall_section_id", null: false
     t.date "reset_on", null: false
@@ -35,11 +35,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_035731) do
     t.check_constraint "`grade` between 0 and 10", name: "routes_grade_range"
   end
 
+  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "setters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_setters_on_name", unique: true
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "setter_id", null: false
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["setter_id"], name: "index_users_on_setter_id", unique: true
   end
 
   create_table "wall_sections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -52,4 +71,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_035731) do
   add_foreign_key "resets", "wall_sections"
   add_foreign_key "routes", "setters"
   add_foreign_key "routes", "wall_sections"
+  add_foreign_key "sessions", "users"
+  add_foreign_key "users", "setters"
 end
