@@ -9,6 +9,8 @@ class User < ApplicationRecord
 
   validates :email_address, presence: true, uniqueness: true
   validates :setter, uniqueness: true
+  # has_secure_password already requires a password and caps its length. Nil means it isn't being changed.
+  validates :password, length: { minimum: 12 }, allow_nil: true
 
   delegate :name, to: :setter
 end

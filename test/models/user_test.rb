@@ -19,11 +19,32 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "allows one account per email address and per setter" do
-    user = User.new(email_address: "ALEX@example.com", password: "secret", setter: setters(:alex))
+    user = User.new(email_address: "ALEX@example.com", password: "a long secret", setter: setters(:alex))
     assert_not user.valid?
     assert_equal %i[email_address setter], user.errors.attribute_names.sort
 
-    assert User.new(email_address: "jo@example.com", password: "secret", setter: setters(:jo)).valid?
+    assert User.new(email_address: "jo@example.com", password: "a long secret", setter: setters(:jo)).valid?
+  end
+
+  test "requires a password of at least 12 characters" do
+    user = User.new(email_address: "jo@example.com", setter: setters(:jo))
+
+    user.password = "x" * 11
+    assert_not user.valid?
+    assert_equal [ "is too short (minimum is 12 characters)" ], user.errors[:password]
+
+    user.password = "x" * 12
+    assert user.valid?
+  end
+
+  test "reports a missing password once" do
+    user = User.new(email_address: "jo@example.com", setter: setters(:jo), password: "")
+    assert_not user.valid?
+    assert_equal [ "can't be blank" ], user.errors[:password]
+  end
+
+  test "can be updated without giving the password again" do
+    assert User.find(users(:alex).id).update(email_address: "alex.new@example.com")
   end
 
   test "authenticates only with the right password" do
